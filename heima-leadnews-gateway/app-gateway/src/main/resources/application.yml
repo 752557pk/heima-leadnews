@@ -1,0 +1,22 @@
+server:
+  port: 7000
+spring:
+  application:
+    name: app-gateway
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+    gateway:
+      routes:
+        - id: user
+          uri: lb://heima-leadnews-user
+          predicates:
+            - Path=/user/**
+          filters:
+            - StripPrefix= 1  # 先切切割路径（切割的内容扔掉），后转发
+        - id: article
+          uri: lb://heima-leadnews-article
+          predicates:
+            - Path=/article/**
+          filters:
+            - StripPrefix= 1  # 先切切割路径（切割的内容扔掉），后转发

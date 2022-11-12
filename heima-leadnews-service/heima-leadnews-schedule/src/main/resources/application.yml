@@ -1,0 +1,22 @@
+server:
+  port: 8005
+spring:
+  application:
+    name: heima-leadnews-schedule
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+  datasource:
+    password: 123456
+    username: root
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/leadnews_schedule?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+  redis:
+    host: localhost
+    port: 6379
+
+mybatis-plus:
+  type-aliases-package: com.heima.model.schedule.pojos
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+

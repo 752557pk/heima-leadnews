@@ -1,0 +1,15 @@
+server:
+  port: 9000
+spring:
+  freemarker:
+    cache: false  #关闭模板缓存，方便测试
+    settings:
+      template_update_delay: 0 #检查模板更新延迟时间，设置为0表示立即检查，如果时间大于0会有缓存不方便进行模板测试
+    suffix: .ftl # 配置模板文件的后缀名称
+
+minio:
+  password: minio123
+  bucket: heima42
+  readPath: http://localhost:9000
+  endpoint: http://localhost:9000
+  username: minio

@@ -1,0 +1,15 @@
+server:
+  port: 8000
+spring:
+  application:
+    name: heima-leadnews-user
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+  datasource:
+    password: 123456
+    username: root
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/leadnews_user?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+mybatis-plus:
+  type-aliases-package: com.heima.model.user.pojos

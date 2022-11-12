@@ -1,0 +1,44 @@
+server:
+  port: 8002
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      retries: 10
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: ${spring.application.name}-test
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  application:
+    name: heima-leadnews-wemedia
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+  datasource:
+    password: 123456
+    username: root
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/leadnews_wemedia?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+mybatis-plus:
+  type-aliases-package: com.heima.model.wemedia.pojos
+
+aliyun:
+  accessKeyId: LTAI5tLoSPv5eEbD9LmZZ9En
+  accessKeySecret: JKpuhjKuP0Fpg4rHRyOuvPeIwulEKq
+
+
+minio:
+  password: minio123
+  bucket: heima42
+  readPath: http://localhost:9000
+  endpoint: http://localhost:9000
+  username: minio
+feign:
+  client:
+    config:
+      default:
+        read-timeout: 5000
+        connect-timeout: 5000

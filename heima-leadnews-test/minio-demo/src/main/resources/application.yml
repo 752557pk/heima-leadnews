@@ -1,0 +1,7 @@
+
+minio:
+  password: minio123
+  bucket: heima42
+  readPath: http://localhost:9000
+  endpoint: http://localhost:9000
+  username: minio

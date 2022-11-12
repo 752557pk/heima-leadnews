@@ -1,0 +1,41 @@
+server:
+  port: 8001
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      retries: 10
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: ${spring.application.name}-test
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  application:
+    name: heima-leadnews-article
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+  datasource:
+    password: 123456
+    username: root
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/leadnews_article?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+  freemarker:
+    cache: false  #关闭模板缓存，方便测试
+    settings:
+      template_update_delay: 0 #检查模板更新延迟时间，设置为0表示立即检查，如果时间大于0会有缓存不方便进行模板测试
+    suffix: .ftl # 配置模板文件的后缀名称
+
+minio:
+  password: minio123
+  bucket: heima42
+  readPath: http://localhost:9000
+  endpoint: http://localhost:9000
+  username: minio
+
+mybatis-plus:
+  type-aliases-package: com.heima.model.article.pojos
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+

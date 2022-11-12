@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.heima.wemedia.mapper.WmNewsMaterialMapper">
+
+
+    <insert id="insertBatch">
+        insert into wm_news_material ( material_id ,news_id ,ord ,type  ) values
+        <foreach collection="list" item="item" open="" close="" separator=",">
+            (#{item.materialId},#{item.newsId},#{item.ord},#{item.type})
+        </foreach>
+    </insert>
+
+</mapper>

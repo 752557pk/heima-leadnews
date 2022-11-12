@@ -1,0 +1,16 @@
+server:
+  port: 7001
+spring:
+  application:
+    name: wemedia-gateway
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+    gateway:
+      routes:
+        - id: wemedia
+          uri: lb://heima-leadnews-wemedia
+          predicates:
+            - Path=/wemedia/**
+          filters:
+            - StripPrefix= 1  # 先切切割路径（切割的内容扔掉），后转发

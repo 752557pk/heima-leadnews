@@ -1,0 +1,30 @@
+version: "3.0"
+services:
+  "heima42-nacos":
+    container_name: "heima42-nacos"
+    environment:
+      - MODE=standalone
+    ports:
+      - 8848:8848
+    image: nacos/nacos-server
+  "heima42-nginx":
+    container_name: "heima42-nginx"
+    image: nginx
+    ports:
+      - 10000:6000
+      - 10001:6001
+    volumes:
+      - E:\教学资料\2022-最新\09-项目三黑马头条\heima-leadnews-42\heima-leadnews-42\env\nginx\conf\nginx.conf:/etc/nginx/nginx.conf
+      - E:\教学资料\2022-最新\09-项目三黑马头条\heima-leadnews-42\heima-leadnews-42\env\nginx\html:/usr/share/nginx/html
+  "heima42-minio":
+    container_name:   "heima42-minio"
+    ports:
+      - 9000:9000
+      - 9001:9001
+    environment:
+      - "MINIO_ACCESS_KEY=minio"
+      - "MINIO_SECRET_KEY=minio123"
+    volumes:
+      - E:\教学资料\2022-最新\09-项目三黑马头条\heima-leadnews-42\heima-leadnews-42\env\minio:/data
+    image: minio/minio
+    command: "server /data --console-address ':9001'"
