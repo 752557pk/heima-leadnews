@@ -9,5 +9,6 @@ public class AliyunDemoApp {
 
     public static void main(String[] args) {
         SpringApplication.run(AliyunDemoApp.class,args);
+        System.out.println("AliyunDemoApp 启动成功");
     }
 }

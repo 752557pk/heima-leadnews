@@ -13,5 +13,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class WemediaApp {
     public static void main(String[] args) {
         SpringApplication.run(WemediaApp.class,args);
+        System.out.println("WemediaApp 启动成功");
     }
 }

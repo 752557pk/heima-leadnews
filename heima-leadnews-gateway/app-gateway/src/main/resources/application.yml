@@ -20,3 +20,9 @@ spring:
             - Path=/article/**
           filters:
             - StripPrefix= 1  # 先切切割路径（切割的内容扔掉），后转发
+        - id: search
+          uri: lb://heima-leadnews-search
+          predicates:
+            - Path=/search/**
+          filters:
+            - StripPrefix= 1  # 先切切割路径（切割的内容扔掉），后转发

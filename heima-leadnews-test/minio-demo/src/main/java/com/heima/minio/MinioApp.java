@@ -8,5 +8,6 @@ public class MinioApp {
 
     public static void main(String[] args) {
         SpringApplication.run(MinioApp.class,args);
+        System.out.println("MinioApp 启动成功");
     }
 }

@@ -12,5 +12,6 @@ public class ScheduleApp {
 
     public static void main(String[] args) {
         SpringApplication.run(ScheduleApp.class,args);
+        System.out.println("ScheduleApp 启动成功");
     }
 }

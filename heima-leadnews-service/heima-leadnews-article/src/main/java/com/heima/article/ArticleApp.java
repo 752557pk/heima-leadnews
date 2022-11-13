@@ -12,5 +12,6 @@ public class ArticleApp {
 
     public static void main(String[] args) {
         SpringApplication.run(ArticleApp.class,args);
+        System.out.println("ArticleApp 启动成功");
     }
 }

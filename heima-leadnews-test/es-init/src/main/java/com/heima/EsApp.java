@@ -1,13 +1,12 @@
-package com.heima.freemarker;
+package com.heima;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FreemarkerApp {
-
+public class EsApp {
     public static void main(String[] args) {
-        SpringApplication.run(FreemarkerApp.class,args);
-        System.out.println("FreemarkerApp 启动成功");
+        SpringApplication.run(EsApp.class);
+        System.out.println("EsApp 启动成功");
     }
 }

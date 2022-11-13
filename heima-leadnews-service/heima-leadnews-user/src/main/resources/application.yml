@@ -7,9 +7,9 @@ spring:
     nacos:
       server-addr: localhost:8848
   datasource:
-    password: 123456
+    password: 752557pkA
     username: root
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/leadnews_user?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mysql://47.114.206.31:3306/leadnews_user?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
 mybatis-plus:
   type-aliases-package: com.heima.model.user.pojos

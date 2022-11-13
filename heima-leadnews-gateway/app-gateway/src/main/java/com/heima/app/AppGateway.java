@@ -8,6 +8,7 @@ public class AppGateway {
 
     public static void main(String[] args) {
         SpringApplication.run(AppGateway.class,args);
+        System.out.println("AppGateway 启动成功");
     }
 
 }

@@ -10,5 +10,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class UserApp {
     public static void main(String[] args) {
         SpringApplication.run(UserApp.class,args);
+        System.out.println("UserApp 启动成功");
     }
 }
