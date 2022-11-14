@@ -18,6 +18,7 @@
         <module>aliyun-demo</module>
         <module>tess4J-demo</module>
         <module>es-init</module>
+        <module>mongo-demo</module>
     </modules>
 
     <properties>

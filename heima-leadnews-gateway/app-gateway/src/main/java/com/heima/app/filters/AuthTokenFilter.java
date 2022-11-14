@@ -45,10 +45,19 @@ public class AuthTokenFilter implements GlobalFilter {
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             return response.setComplete();//终止请求方法
         }
+
+        //往请求头添加用户ID
         int result = AppJwtUtil.verifyToken(claimsBody);
         if(result==0||result==-1){
+            // 转发用户信息
+            String userId =claimsBody.get("id") + "";
+            ServerHttpRequest serverHttpRequest = request.mutate()
+                    .header("userId",userId)
+                    .build();
+            exchange = exchange.mutate().request(serverHttpRequest).build();
             return chain.filter(exchange);//放行请求
         }
+
 
         // 没有传token则终止
         response.setStatusCode(HttpStatus.UNAUTHORIZED);

@@ -1,1 +1,6 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.heima.common.mybatis.plus.MybatisPlusConfig,com.heima.common.swagger.SwaggerConfiguration,com.heima.common.knife4j.Knife4jConfiguration,com.heima.common.exception.ExceptionCatch
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.heima.common.mybatis.plus.MybatisPlusConfig,\
+  com.heima.common.swagger.SwaggerConfiguration,\
+  com.heima.common.knife4j.Knife4jConfiguration,\
+  com.heima.common.exception.ExceptionCatch,\
+  com.heima.common.jackson.InitJacksonConfig

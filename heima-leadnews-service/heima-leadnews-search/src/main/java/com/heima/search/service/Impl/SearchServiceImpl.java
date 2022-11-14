@@ -2,7 +2,9 @@ package com.heima.search.service.Impl;
 
 import com.heima.model.common.dtos.ResponseResult;
 import com.heima.model.searhc.dto.UserSearchDto;
+import com.heima.search.service.ApUserSearchService;
 import com.heima.search.service.SearchService;
+import com.heima.utils.common.UserThreadLocalUtil;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -30,11 +32,19 @@ import java.util.Objects;
 public class SearchServiceImpl implements SearchService {
     @Autowired
     RestHighLevelClient restHighLevelClient;
+    @Autowired
+    ApUserSearchService apUserSearchService;
 
     @Override
     public ResponseResult search(UserSearchDto dto) {
         //参数校验
         dto.checkParam();
+        //记录关键字
+        if (dto.getMinBehotTime().getTime()>System.currentTimeMillis()) {
+
+            apUserSearchService.addApUserSearch(UserThreadLocalUtil.get(),dto.getSearchWords());
+        }
+
         //拼条件
         SearchRequest searchRequest = new SearchRequest("leadnews");
         SearchSourceBuilder source = searchRequest.source();

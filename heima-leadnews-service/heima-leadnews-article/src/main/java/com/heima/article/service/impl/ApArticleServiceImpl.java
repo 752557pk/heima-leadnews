@@ -1,10 +1,8 @@
 package com.heima.article.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-
 import com.heima.article.mapper.ApArticleConfigMapper;
 import com.heima.article.mapper.ApArticleContentMapper;
 import com.heima.article.mapper.ApArticleMapper;
@@ -16,17 +14,18 @@ import com.heima.model.article.pojos.ApArticle;
 import com.heima.model.article.pojos.ApArticleConfig;
 import com.heima.model.article.pojos.ApArticleContent;
 import com.heima.model.common.dtos.ResponseResult;
+import com.heima.model.searhc.pojo.SearchArticleVo;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Date;
 import java.util.HashMap;
@@ -34,45 +33,44 @@ import java.util.List;
 import java.util.Map;
 
 /**
-* <p>
-* ap_article Service 接口实现
-* </p>
-*
-* @author lenovo
-* @since 2022-10-29 11:29:44
-*/
+ * <p>
+ * ap_article Service 接口实现
+ * </p>
+ *
+ * @author lenovo
+ * @since 2022-10-29 11:29:44
+ */
 @Service
 @Transactional
 @Slf4j
 public class ApArticleServiceImpl extends ServiceImpl<ApArticleMapper, ApArticle> implements ApArticleService {
 
     @Autowired
-    private ApArticleMapper apArticleMapper;
-    @Autowired
-    private ApArticleConfigMapper apArticleConfigMapper;
-
-    @Autowired
-    private ApArticleContentMapper apArticleContentMapper;
-
-    @Autowired
     Configuration configuration;
     @Autowired
     FileStorageService fileStorageService;
+    @Autowired
+    KafkaTemplate<String, String> kafkaTemplate;
+    @Autowired
+    private ApArticleMapper apArticleMapper;
+    @Autowired
+    private ApArticleConfigMapper apArticleConfigMapper;
+    @Autowired
+    private ApArticleContentMapper apArticleContentMapper;
 
     /**
-     *
      * @param articleListDto
-     * @param type 0= load 1=loadNew 2= loadMore
+     * @param type           0= load 1=loadNew 2= loadMore
      * @return
      */
     @Override
-    public ResponseResult load(ArticleListDto articleListDto,int type) {
-        if(type==0) {
+    public ResponseResult load(ArticleListDto articleListDto, int type) {
+        if (type == 0) {
             articleListDto.setMinBehotTime(new Date());
         }
-        if(type==1){
+        if (type == 1) {
             articleListDto.setMinBehotTime(null);
-        }else {
+        } else {
             articleListDto.setMaxBehotTime(null);
         }
         List<ApArticle> data = apArticleMapper.load(articleListDto);
@@ -81,6 +79,7 @@ public class ApArticleServiceImpl extends ServiceImpl<ApArticleMapper, ApArticle
 
     /**
      * 要新增也要修改
+     *
      * @param articleDto
      * @return
      */
@@ -88,8 +87,8 @@ public class ApArticleServiceImpl extends ServiceImpl<ApArticleMapper, ApArticle
     public ResponseResult saveOrUpdate(ArticleDto articleDto) throws Exception {
         // 保存到ap_aritcle：判断是否存在，如果是则修改，如果不是则添加
         ApArticle apArticle = new ApArticle();
-        BeanUtils.copyProperties(articleDto,apArticle);
-        if(articleDto.getId()==null){// 新增
+        BeanUtils.copyProperties(articleDto, apArticle);
+        if (articleDto.getId() == null) {// 新增
             apArticleMapper.insert(apArticle);
             // 保存到ap_article_config
             ApArticleConfig apArticleConfig = new ApArticleConfig();
@@ -106,37 +105,40 @@ public class ApArticleServiceImpl extends ServiceImpl<ApArticleMapper, ApArticle
             apArticleContentMapper.insert(apArticleContent);
             // 回填
             articleDto.setId(apArticle.getId());
-        }else{// 修改
+        } else {// 修改
             apArticleMapper.updateById(apArticle);
             // 修改内容
             ApArticleContent apArticleContent = new ApArticleContent();
             apArticleContent.setContent(articleDto.getContent());
             // 1。更新的对象；2.更新的条件
             LambdaQueryWrapper<ApArticleContent> wrapper = new LambdaQueryWrapper<>();
-            wrapper.eq(ApArticleContent::getArticleId,articleDto.getId());
-            apArticleContentMapper.update(apArticleContent,wrapper);
+            wrapper.eq(ApArticleContent::getArticleId, articleDto.getId());
+            apArticleContentMapper.update(apArticleContent, wrapper);
         }
         // 生成静态页面
-        genHtml(articleDto);
+        genHtml(apArticle,articleDto);
+
+
         return ResponseResult.okResult(apArticle.getId());
     }
 
     /**
      * 生成静态详情并上传minio
+     *
      * @param articleDto
      * @throws Exception
      */
     @Async
-    public void genHtml(ArticleDto articleDto) throws Exception {
+    public void genHtml(ApArticle apArticle , ArticleDto articleDto) throws Exception {
         // 获取模板，并传入数据，生成静态页面保存到d盘
         Template template = configuration.getTemplate("article.ftl");
         String content = articleDto.getContent();
         List<HashMap> list = JSON.parseArray(content, HashMap.class);
-        Map<String,Object> data = new HashMap<>();
-        data.put("content",list);
+        Map<String, Object> data = new HashMap<>();
+        data.put("content", list);
         // 生成结果
         StringWriter stringWriter = new StringWriter();
-        template.process(data,stringWriter);
+        template.process(data, stringWriter);
 
         // 上传minio
         ByteArrayInputStream inputStream = new ByteArrayInputStream(stringWriter.toString().getBytes());
@@ -147,6 +149,14 @@ public class ApArticleServiceImpl extends ServiceImpl<ApArticleMapper, ApArticle
         temp.setStaticUrl(path);
         temp.setId(articleDto.getId());
         apArticleMapper.updateById(temp);
+
+        //发送kafka对es索引更新或修改
+        SearchArticleVo searchArticleVo = new SearchArticleVo();
+        BeanUtils.copyProperties(apArticle, searchArticleVo);
+        searchArticleVo.setLayout(articleDto.getLayout());
+        searchArticleVo.setContent(articleDto.getContent());
+
+        kafkaTemplate.send("es_index_update", JSON.toJSONString(searchArticleVo));
     }
 
 

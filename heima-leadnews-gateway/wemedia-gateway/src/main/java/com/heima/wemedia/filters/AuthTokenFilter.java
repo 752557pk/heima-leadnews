@@ -43,6 +43,8 @@ public class AuthTokenFilter implements GlobalFilter {
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             return response.setComplete();//终止请求方法
         }
+
+        //往请求头添加用户ID
         int result = AppJwtUtil.verifyToken(claimsBody);
         if(result==0||result==-1){
             // 转发用户信息
