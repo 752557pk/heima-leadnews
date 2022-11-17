@@ -2,7 +2,8 @@ package com.heima.search.listeners;
 
 import com.alibaba.fastjson.JSON;
 import com.heima.model.searhc.pojo.SearchArticleVo;
-import com.heima.search.dao.ArticleDao;
+
+import com.heima.search.dao.es.ArticleDao;
 import com.heima.search.pojo.Article;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -58,13 +58,13 @@
         <elasticsearch.version>7.12.1</elasticsearch.version>
         <ali.core.version>4.1.1</ali.core.version>
         <ali.green.version>3.4.1</ali.green.version>
-        <kafka.version>2.6.6</kafka.version>
-        <kafka.client.version>2.5.1</kafka.client.version>
         <reflections.version>0.9.11</reflections.version>
         <swagger.version>2.9.2</swagger.version>
         <knife4j.version>2.0.2</knife4j.version>
         <com.alibaba.cloud>2.2.5.RELEASE</com.alibaba.cloud>
         <xxl.job.version>2.2.0-SNAPSHOT</xxl.job.version>
+        <kafka.version>2.6.6</kafka.version>
+        <kafka.client.version>2.5.1</kafka.client.version>
     </properties>
 
     <!-- 继承Spring boot工程 -->
@@ -146,7 +146,29 @@
                 <artifactId>commons-beanutils</artifactId>
                 <version>1.9.3</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.kafka</groupId>
+                <artifactId>spring-kafka</artifactId>
+                <version>${kafka.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka-clients</artifactId>
+                <version>${kafka.client.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka-streams</artifactId>
+                <version>${kafka.client.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.kafka</groupId>
+                        <artifactId>connect-json</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
         </dependencies>
+
     </dependencyManagement>
 
     <dependencies>

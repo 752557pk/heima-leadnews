@@ -1,0 +1,14 @@
+server:
+  port: 8007
+spring:
+  application:
+    name: leadnews-behavior
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      retries: 10
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer

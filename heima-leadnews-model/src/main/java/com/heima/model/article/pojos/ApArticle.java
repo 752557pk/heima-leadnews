@@ -57,12 +57,12 @@ public class ApArticle implements Serializable {
     /**
     * 收藏数量
     */
-    private Long collection;
+    private Integer collection;
 
     /**
     * 评论数量
     */
-    private Long comment;
+    private Integer comment;
 
     /**
     * 区县
@@ -106,7 +106,7 @@ public class ApArticle implements Serializable {
     /**
     * 点赞数量
     */
-    private Long likes;
+    private Integer likes;
 
     /**
     * 来源
@@ -138,7 +138,7 @@ public class ApArticle implements Serializable {
     /**
     * 阅读数量
     */
-    private Long views;
+    private Integer views;
 
 
 }
